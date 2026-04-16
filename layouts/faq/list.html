@@ -1,0 +1,50 @@
+{{ define "main" }}
+<div class="page-wrap">
+  <div class="container">
+    <header class="page-header">
+      <h1>{{ .Title }}</h1>
+      {{ with .Description }}<p class="page-desc">{{ . }}</p>{{ end }}
+    </header>
+
+    {{ with .Content }}
+    <div class="prose" style="margin-bottom: 2rem;">{{ . }}</div>
+    {{ end }}
+
+    <div class="faq-list">
+      {{ range .Pages }}
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          {{ .Title }}
+          <span class="faq-chevron">▾</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            {{ .Content }}
+          </div>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</div>
+{{ end }}
+
+{{ define "scripts" }}
+<script>
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      // close all
+      document.querySelectorAll('.faq-question').forEach(b => {
+        b.setAttribute('aria-expanded', 'false');
+        b.closest('.faq-item').classList.remove('open');
+      });
+      // open clicked if it was closed
+      if (!expanded) {
+        btn.setAttribute('aria-expanded', 'true');
+        btn.closest('.faq-item').classList.add('open');
+      }
+    });
+  });
+</script>
+{{ end }}

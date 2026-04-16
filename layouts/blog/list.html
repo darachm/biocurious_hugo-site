@@ -1,0 +1,27 @@
+{{ define "main" }}
+<div class="page-wrap">
+  <div class="container">
+    <header class="page-header">
+      <h1>{{ .Title }}</h1>
+      {{ with .Description }}<p class="page-desc">{{ . }}</p>{{ end }}
+    </header>
+
+    {{ if .Pages }}
+    <div class="blog-grid">
+      {{ range .Pages }}
+      <a href="{{ .RelPermalink }}" class="blog-card">
+        <div class="blog-card-meta">{{ .Date.Format "January 2, 2006" }}</div>
+        <h2 class="blog-card-title">{{ .Title }}</h2>
+        <p class="blog-card-summary">{{ .Summary }}</p>
+        <span class="blog-read-more">Read more →</span>
+      </a>
+      {{ end }}
+    </div>
+    {{ else }}
+    <div class="prose">
+      {{ .Content }}
+    </div>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

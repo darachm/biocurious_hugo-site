@@ -1,0 +1,17 @@
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="site-logo">
+      <img src="/images/Logo-in-txt-blue_black.jpg" alt="BioCurious" class="logo-img" />
+    </a>
+
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="main-nav" id="main-nav">
+      {{ range site.Menus.main }}
+        <a href="{{ .URL }}" class="nav-link{{ if $.IsMenuCurrent "main" . }} active{{ end }}">{{ .Name }}</a>
+      {{ end }}
+    </nav>
+  </div>
+</header>

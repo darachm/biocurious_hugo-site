@@ -1,0 +1,20 @@
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="/images/Logo-in-txt-blue_black.jpg" alt="BioCurious" class="footer-logo-img" />
+    </div>
+    <div class="footer-links">
+      {{ range site.Menus.main }}
+        <a href="{{ .URL }}">{{ .Name }}</a>
+      {{ end }}
+    </div>
+    <div class="footer-contact">
+      <p>{{ site.Params.address }}</p>
+      <p><a href="mailto:{{ site.Params.email }}">{{ site.Params.email }}</a></p>
+      <p><a href="{{ site.Params.meetup }}" target="_blank" rel="noopener">Join us on Meetup.com</a></p>
+    </div>
+    <div class="footer-copy">
+      <p>© {{ now.Year }} BioCurious · Payments secured by Stripe</p>
+    </div>
+  </div>
+</footer>

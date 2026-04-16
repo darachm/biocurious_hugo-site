@@ -1,0 +1,18 @@
+{{ define "main" }}
+<div class="page-wrap">
+  <div class="container">
+    <article class="page-content">
+      <header class="page-header">
+        <p class="blog-date">{{ .Date.Format "January 2, 2006" }}</p>
+        <h1>{{ .Title }}</h1>
+      </header>
+      <div class="prose">
+        {{ .Content }}
+      </div>
+      <div style="margin-top: 2rem;">
+        <a href="/blog/" class="btn btn-outline">← Back to Blog</a>
+      </div>
+    </article>
+  </div>
+</div>
+{{ end }}

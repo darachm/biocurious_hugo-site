@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Membership &amp; Services · BioCurious</title>
+  <meta name="description" content="Join BioCurious — choose a membership and any add-on services." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧫</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  
+</head>
+<body>
+
+  <header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="site-logo">
+      <img src="/images/Logo-in-txt-blue_black.jpg" alt="BioCurious" class="logo-img" />
+    </a>
+
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="main-nav" id="main-nav">
+      
+        <a href="/projects/" class="nav-link">Projects</a>
+      
+        <a href="/events/" class="nav-link">Events</a>
+      
+        <a href="/faq/" class="nav-link">FAQ</a>
+      
+        <a href="/blog/" class="nav-link">Blog</a>
+      
+        <a href="/membership/" class="nav-link">Membership</a>
+      
+        <a href="/donations/" class="nav-link">Donations</a>
+      
+        <a href="/wiki/" class="nav-link">Wiki</a>
+      
+    </nav>
+  </div>
+</header>
+
+  <main id="main-content">
+    
+<div class="page-wrap">
+  <section class="membership-hero">
+    <div class="container">
+      <p class="eyebrow">Membership & Services</p>
+      <h1>Join the Community Lab</h1>
+      <p class="hero-lead">Select a membership and any add-on services. Check out securely through Stripe.</p>
+    </div>
+  </section>
+
+  <div class="container" id="store">
+
+    
+    <section class="store-section">
+      <h2 class="store-heading">🧬 Memberships</h2>
+      <div class="membership-grid">
+
+        <div class="membership-card" data-id="individual-monthly" data-name="Individual Membership" data-price="130" data-setup="100" data-freq="month">
+          <div class="badge">Most Popular</div>
+          <div class="card-icon">🧬</div>
+          <h3>Individual Membership</h3>
+          <p>Full access to BioCurious lab space, equipment, and community. Includes Open Lab nights, workshops, and co-working space.</p>
+          <ul class="feature-list">
+            <li>Full lab access 24/7</li>
+            <li>Equipment & co-working space</li>
+            <li>Community events & workshops</li>
+            <li>Safety training included</li>
+          </ul>
+          <div class="price-row">
+            <span class="price">$130</span>
+            <span class="freq">/month</span>
+          </div>
+          <p class="setup-fee">+ $100 one-time setup fee</p>
+          <button class="btn btn-primary add-to-cart">Add to Cart</button>
+        </div>
+
+        <div class="membership-card" data-id="family-monthly" data-name="Family Membership" data-price="200" data-setup="100" data-freq="month">
+          <div class="card-icon">👨‍👩‍👧‍👦</div>
+          <h3>Family Membership</h3>
+          <p>Everything in Individual, plus access for your whole household. A Family Membership is required for anyone under 18 to work in the lab.</p>
+          <ul class="feature-list">
+            <li>Full lab access 24/7</li>
+            <li>Whole household included</li>
+            <li>Required for under-18 members</li>
+            <li>Safety training included</li>
+          </ul>
+          <div class="price-row">
+            <span class="price">$200</span>
+            <span class="freq">/month</span>
+          </div>
+          <p class="setup-fee">+ $100 one-time setup fee</p>
+          <button class="btn btn-primary add-to-cart">Add to Cart</button>
+        </div>
+
+      </div>
+    </section>
+
+    
+    <section class="store-section">
+      <h2 class="store-heading">📦 Add-on Services</h2>
+      <p class="store-note">Requires an active membership.</p>
+      <div class="addon-grid">
+
+        <div class="addon-card" data-id="dry-storage" data-name="Member Dry Storage" data-price="10" data-setup="0" data-freq="month" data-qty="true">
+          <span class="card-icon">📦</span>
+          <h3>Member Dry Storage</h3>
+          <p>Personal dry storage bin to keep your materials secure at the lab between visits.</p>
+          <div class="price-row"><span class="price">$10</span><span class="freq">/month each</span></div>
+          <div class="qty-row">
+            <label>Qty:</label>
+            <div class="qty-control">
+              <button class="qty-btn qty-minus">−</button>
+              <span class="qty-val">1</span>
+              <button class="qty-btn qty-plus">+</button>
+            </div>
+          </div>
+          <button class="btn btn-secondary add-to-cart">Add to Cart</button>
+        </div>
+
+        <div class="addon-card" data-id="freezer-80" data-name="–80°C Freezer (6 boxes)" data-price="20" data-setup="0" data-freq="month" data-qty="true">
+          <span class="card-icon">❄️</span>
+          <h3>–80°C Freezer (6 boxes)</h3>
+          <p>Dedicated space in our ultra-low temperature freezer for long-term sample preservation.</p>
+          <div class="price-row"><span class="price">$20</span><span class="freq">/month each</span></div>
+          <div class="qty-row">
+            <label>Qty:</label>
+            <div class="qty-control">
+              <button class="qty-btn qty-minus">−</button>
+              <span class="qty-val">1</span>
+              <button class="qty-btn qty-plus">+</button>
+            </div>
+          </div>
+          <button class="btn btn-secondary add-to-cart">Add to Cart</button>
+        </div>
+
+        <div class="addon-card" data-id="tissue-culture" data-name="Tissue Culture Room" data-price="100" data-setup="0" data-freq="month">
+          <span class="card-icon">🔬</span>
+          <h3>Tissue Culture Room</h3>
+          <p>Access to our sterile tissue culture facility with biosafety cabinets, incubators, and microscopy.</p>
+          <div class="price-row"><span class="price">$100</span><span class="freq">/month</span></div>
+          <button class="btn btn-secondary add-to-cart">Add to Cart</button>
+        </div>
+
+      </div>
+    </section>
+
+    
+    <section class="store-section">
+      <h2 class="store-heading">🏢 Dedicated Spaces</h2>
+      <p class="store-note">Private offices and lab benches for startups and serious researchers.</p>
+      <div class="addon-grid">
+
+        <div class="addon-card" data-id="standard-office" data-name="Standard Office (~12'×12')" data-price="1200" data-setup="0" data-freq="month">
+          <span class="card-icon">🏢</span>
+          <h3>Standard Office (~12'×12')</h3>
+          <p>Private office space for your team or startup. Includes one Individual Membership.</p>
+          <div class="price-row"><span class="price">$1,200</span><span class="freq">/month</span></div>
+          <button class="btn btn-secondary add-to-cart">Add to Cart</button>
+        </div>
+
+        <div class="addon-card" data-id="lab-bench" data-name="6' Lab Bench" data-price="500" data-setup="0" data-freq="month">
+          <span class="card-icon">🔩</span>
+          <h3>6' Lab Bench</h3>
+          <p>Your own dedicated 6-foot lab bench with full access to shared equipment and facilities.</p>
+          <div class="price-row"><span class="price">$500</span><span class="freq">/month</span></div>
+          <button class="btn btn-secondary add-to-cart">Add to Cart</button>
+        </div>
+
+        <div class="addon-card" data-id="back-lab-office" data-name="Back Lab Office" data-price="850" data-setup="0" data-freq="month">
+          <span class="card-icon">🧪</span>
+          <h3>Back Lab Office</h3>
+          <p>Semi-private office space in the back lab area, ideal for focused work close to the equipment.</p>
+          <div class="price-row"><span class="price">$850</span><span class="freq">/month</span></div>
+          <button class="btn btn-secondary add-to-cart">Add to Cart</button>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+</div>
+
+
+<div class="cart-overlay" id="cart-overlay"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-header">
+    <h2>Your Cart <span id="cart-count">(0)</span></h2>
+    <button class="cart-close" id="cart-close">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <p class="cart-empty">Your cart is empty.</p>
+  </div>
+  <div class="cart-footer" id="cart-footer" style="display:none;">
+    <div class="cart-totals">
+      <div class="total-row"><span>Monthly recurring</span><span id="total-monthly">$0/mo</span></div>
+      <div class="total-row setup" id="setup-row" style="display:none;"><span>One-time setup</span><span id="total-setup">$0</span></div>
+      <div class="total-row grand"><span>Today's total</span><span id="total-today">$0</span></div>
+    </div>
+    <button class="btn btn-primary" id="checkout-btn" style="width:100%;">Proceed to Checkout →</button>
+    <p class="cart-secure">🔒 Secured by Stripe</p>
+  </div>
+</div>
+
+
+<button class="cart-fab" id="cart-fab" style="display:none;">
+  🛒 <span id="fab-count">0</span> items · <span id="fab-total">$0</span>
+</button>
+
+
+<div class="modal-overlay" id="modal-overlay" style="display:none;">
+  <div class="modal" id="checkout-modal">
+    <h2>Almost there!</h2>
+    <p>Enter your details. You'll be redirected to Stripe to pay securely.</p>
+    <div id="checkout-error" class="checkout-error" style="display:none;"></div>
+    <div class="order-summary" id="order-summary"></div>
+    <label>Full Name
+      <input type="text" id="cust-name" placeholder="Jane Doe" autocomplete="name" />
+    </label>
+    <label>Email
+      <input type="email" id="cust-email" placeholder="jane@example.com" autocomplete="email" />
+    </label>
+    <button class="btn btn-primary" id="pay-btn" style="width:100%;margin-top:1rem;" disabled>Pay with Stripe →</button>
+    <button class="btn btn-outline" id="modal-cancel" style="width:100%;margin-top:.5rem;">Cancel</button>
+  </div>
+</div>
+
+
+  </main>
+
+  <footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="/images/Logo-in-txt-blue_black.jpg" alt="BioCurious" class="footer-logo-img" />
+    </div>
+    <div class="footer-links">
+      
+        <a href="/projects/">Projects</a>
+      
+        <a href="/events/">Events</a>
+      
+        <a href="/faq/">FAQ</a>
+      
+        <a href="/blog/">Blog</a>
+      
+        <a href="/membership/">Membership</a>
+      
+        <a href="/donations/">Donations</a>
+      
+        <a href="/wiki/">Wiki</a>
+      
+    </div>
+    <div class="footer-contact">
+      <p>3108 Patrick Henry Drive, Santa Clara, CA 95054</p>
+      <p><a href="mailto:info@biocurious.org">info@biocurious.org</a></p>
+      <p><a href="https://www.meetup.com/biocurious/events/" target="_blank" rel="noopener">Join us on Meetup.com</a></p>
+    </div>
+    <div class="footer-copy">
+      <p>© 2026 BioCurious · Payments secured by Stripe</p>
+    </div>
+  </div>
+</footer>
+
+
+  <script src="/js/nav.js"></script>
+  
+<script src="/js/cart.js"></script>
+
+</body>
+</html>

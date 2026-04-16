@@ -1,0 +1,40 @@
+title: "BioCurious"
+timeZone: "America/Los_Angeles"
+defaultContentLanguage: en
+contentDir: content
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+params:
+  description: "A community biology lab for amateurs, inventors, entrepreneurs, and anyone who wants to experiment with friends."
+  address: "3108 Patrick Henry Drive, Santa Clara, CA 95054"
+  email: "info@biocurious.org"
+  meetup: "https://www.meetup.com/biocurious/events/"
+  stripe_checkout: "/.netlify/functions/create-checkout"
+
+menus:
+  main:
+    - name: Projects
+      url: /projects/
+      weight: 1
+    - name: Events
+      url: /events/
+      weight: 2
+    - name: FAQ
+      url: /faq/
+      weight: 3
+    - name: Blog
+      url: /blog/
+      weight: 4
+    - name: Membership
+      url: /membership/
+      weight: 5
+    - name: Donations
+      url: /donations/
+      weight: 6
+    - name: Wiki
+      url: /wiki/
+      weight: 7
