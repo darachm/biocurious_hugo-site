@@ -10,6 +10,12 @@ exports.handler = async function (event) {
 
     const origin = event.headers.origin || event.headers.referer || 'https://biocurious-hugo-site.netlify.app';
 
+    // Create a Stripe customer with name and email so both appear in checkout
+    const customer = await stripe.customers.create({
+      name: customerName,
+      email: customerEmail,
+    });
+
     // Build line items dynamically from cart data
     const lineItems = [];
 
@@ -60,8 +66,7 @@ exports.handler = async function (event) {
     const session = await stripe.checkout.sessions.create({
       mode,
       line_items: lineItems,
-      customer_email: customerEmail,
-      metadata: { customerName },
+      customer: customer.id,
       success_url: origin + '/membership/success/',
       cancel_url: origin + '/membership/?cancelled=true',
     });
