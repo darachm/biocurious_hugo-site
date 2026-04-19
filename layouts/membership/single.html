@@ -187,5 +187,6 @@
 {{ end }}
 
 {{ define "scripts" }}
-<script src="/js/cart.js"></script>
+{{ $cart := resources.Get "js/cart.js" | minify | fingerprint }}
+  <script src="{{ $cart.RelPermalink }}" defer></script>
 {{ end }}

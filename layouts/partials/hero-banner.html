@@ -1,0 +1,43 @@
+{{- $slides := .Site.Params.heroBanner.slides | default (slice
+  (dict "image" "banner1.jpg" "alt" "BioCurious lab")
+  (dict "image" "banner2.jpg" "alt" "Community experiments")
+  (dict "image" "banner3.jpg" "alt" "Open science")
+) -}}
+
+<section class="hero-banner" aria-label="Welcome banner">
+  <div class="hero-slides">
+    {{- range $i, $slide := $slides }}
+    <div class="hero-slide{{ if eq $i 0 }} is-active{{ end }}"
+         style="background-image: url('{{ "/images/" | relURL }}{{ $slide.image }}')"
+         role="img"
+         aria-label="{{ $slide.alt }}">
+    </div>
+    {{- end }}
+    <div class="hero-overlay"></div>
+  </div>
+
+  <div class="hero-content">
+    <h1 class="hero-title">
+      {{ .Site.Params.heroBanner.title | default "Welcome to The World's Largest Community Lab Space for Biology" }}
+    </h1>
+    {{- with (.Site.Params.heroBanner.subtitle | default "Located in the heart of Silicon Valley, CA") }}
+    <p class="hero-subtitle">{{ . }}</p>
+    {{- end }}
+    <div class="hero-actions">
+      <a href="/membership/" class="hero-btn hero-btn--primary">Become a Member</a>
+      <a href="/events/" class="hero-btn hero-btn--outline">Explore Events</a>
+    </div>
+  </div>
+
+  {{- if gt (len $slides) 1 }}
+  <div class="hero-dots" role="tablist" aria-label="Banner slides">
+    {{- range $i, $slide := $slides }}
+    <button class="hero-dot{{ if eq $i 0 }} is-active{{ end }}"
+            role="tab"
+            aria-selected="{{ if eq $i 0 }}true{{ else }}false{{ end }}"
+            aria-label="Slide {{ add $i 1 }}"
+            data-index="{{ $i }}"></button>
+    {{- end }}
+  </div>
+  {{- end }}
+</section>

@@ -1,18 +1,5 @@
 {{ define "main" }}
-
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-text">
-      <h1>Welcome to BioCurious!</h1>
-      <p class="hero-lead">At BioCurious, we believe that innovations in biology should be accessible, affordable, and open to everyone. We've built a community biology lab for amateurs, inventors, entrepreneurs, students, and anyone who wants to experiment with friends.</p>
-      <div class="hero-actions">
-        <a href="/membership/" class="btn btn-primary">Become a Member</a>
-        <a href="/events/" class="btn btn-outline">Explore Events</a>
-      </div>
-    </div>
-  </div>
-</section>
-
+{{ partial "hero-banner.html" . }}
 <section class="feature-cards">
   <div class="container">
     <div class="cards-grid">
@@ -34,27 +21,4 @@
     </div>
   </div>
 </section>
-
-<section class="cta-strip">
-  <div class="container">
-    <div class="cta-grid">
-      <div class="cta-card">
-        <h3>Join the Community</h3>
-        <p>Get full 24/7 access to the lab, equipment, co-working space, and community events.</p>
-        <a href="/membership/" class="btn btn-primary">Membership & Pricing</a>
-      </div>
-      <div class="cta-card">
-        <h3>Frequently Asked Questions</h3>
-        <p>New to BioCurious? Find answers about membership, safety, youth access, and more.</p>
-        <a href="/faq/" class="btn btn-outline">Read the FAQs</a>
-      </div>
-      <div class="cta-card">
-        <h3>Latest from the Blog</h3>
-        <p>Stories, project updates, and news from our community of citizen scientists.</p>
-        <a href="/blog/" class="btn btn-outline">Visit the Blog</a>
-      </div>
-    </div>
-  </div>
-</section>
-
 {{ end }}

@@ -5,13 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{ if not .IsHome }}{{ .Title }} · {{ end }}{{ site.Title }}</title>
   <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧫</text></svg>" />
+  <link rel="icon" href=/images/Logo_favicon.jpg>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/styles.css" />
+  
+  {{ $css := resources.Get "css/styles.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" />
+  {{ $heroCss := resources.Get "css/hero-banner.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $heroCss.RelPermalink }}" />
+ 
   {{ block "head" . }}{{ end }}
 </head>
+
 <body>
 
   {{ partial "header.html" . }}
@@ -22,7 +28,11 @@
 
   {{ partial "footer.html" . }}
 
-  <script src="/js/nav.js"></script>
+  {{ $nav := resources.Get "js/nav.js" | minify | fingerprint }}
+  <script src="{{ $nav.RelPermalink }}" defer></script>
+  {{ $heroJs := resources.Get "js/hero-banner.js" | minify | fingerprint }}
+  <script src="{{ $heroJs.RelPermalink }}" defer></script>
+  
   {{ block "scripts" . }}{{ end }}
 </body>
 </html>
