@@ -1,0 +1,40 @@
+{{ define "main" }}
+<div class="page-wrap">
+  <div class="container">
+    <article class="page-content">
+      <header class="page-header">
+        <h1>{{ .Title }}</h1>
+        {{ with .Description }}<p class="page-desc">{{ . }}</p>{{ end }}
+      </header>
+      <div class="prose">
+        {{ .Content }}
+      </div>
+
+      {{ with site.Data.board }}
+      <section class="board-section">
+        <h2 class="board-heading">Who We Are</h2>
+        <div class="board-list">
+          {{ range . }}
+          <div class="board-card">
+            <div class="board-card-header">
+              <img
+                src="/images/{{ .photo }}"
+                alt="{{ .name }}"
+                class="board-photo"
+              />
+              <div class="board-info">
+                <h3 class="board-name">{{ .name }}</h3>
+                <p class="board-title">{{ .title }}</p>
+              </div>
+            </div>
+            <p class="board-bio">{{ .bio }}</p>
+          </div>
+          {{ end }}
+        </div>
+      </section>
+      {{ end }}
+
+    </article>
+  </div>
+</div>
+{{ end }}

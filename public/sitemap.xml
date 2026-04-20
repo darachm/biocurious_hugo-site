@@ -22,9 +22,9 @@
   </url><url>
     <loc>//localhost:1313/faq/</loc>
   </url><url>
-    <loc>//localhost:1313/</loc>
+    <loc>//localhost:1313/about/</loc>
   </url><url>
-    <loc>//localhost:1313/blog/</loc>
+    <loc>//localhost:1313/</loc>
   </url><url>
     <loc>//localhost:1313/categories/</loc>
   </url><url>
@@ -34,9 +34,15 @@
   </url><url>
     <loc>//localhost:1313/membership/</loc>
   </url><url>
+    <loc>//localhost:1313/news/</loc>
+  </url><url>
     <loc>//localhost:1313/projects/</loc>
   </url><url>
     <loc>//localhost:1313/tags/</loc>
+  </url><url>
+    <loc>//localhost:1313/lab/</loc>
+  </url><url>
+    <loc>//localhost:1313/membership/success/</loc>
   </url><url>
     <loc>//localhost:1313/wiki/</loc>
   </url>

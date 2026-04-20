@@ -1,0 +1,79 @@
+/* ─── About Page ─────────────────────────────────────────────── */
+
+.board-section {
+  margin-top: 3rem;
+}
+
+.board-heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 1.5rem;
+}
+
+/* ── Cards list ── */
+.board-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ── Individual card ── */
+.board-card {
+  background: #f4f6f4;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.board-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+/* ── Circular photo ── */
+.board-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 3px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.board-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.board-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.board-title {
+  font-size: 0.9rem;
+  color: #10a7dd;
+  font-weight: 500;
+  margin: 0;
+}
+
+.board-bio {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: #444;
+  margin: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .board-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -1,0 +1,120 @@
+/* ─── Membership Success Page ─────────────────────────────────── */
+
+.success-page {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+
+.success-card {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e8e8e8;
+  padding: 3rem 2.5rem;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+.success-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  line-height: 1;
+}
+
+.success-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  color: #1a3a2a;
+}
+
+.success-lead {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #444;
+  margin: 0 0 2.5rem;
+}
+
+/* ── What happens next ── */
+
+.success-steps {
+  background: #f7faf8;
+  border-radius: 8px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 2.5rem;
+  text-align: left;
+}
+
+.success-steps h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #1a3a2a;
+  margin: 0 0 1.25rem;
+}
+
+.steps-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.steps-list li {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.step-icon {
+  font-size: 1.4rem;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.steps-list strong {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.2rem;
+}
+
+.steps-list p {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Buttons ── */
+
+.success-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 600px) {
+  .success-card {
+    padding: 2rem 1.25rem;
+  }
+
+  .success-title {
+    font-size: 1.75rem;
+  }
+
+  .success-steps {
+    padding: 1.25rem;
+  }
+}

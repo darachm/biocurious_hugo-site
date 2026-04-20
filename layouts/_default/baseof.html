@@ -14,6 +14,16 @@
   <link rel="stylesheet" href="{{ $css.RelPermalink }}" />
   {{ $heroCss := resources.Get "css/hero-banner.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $heroCss.RelPermalink }}" />
+  {{ $successCss := resources.Get "css/success.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $successCss.RelPermalink }}" />
+  
+  {{ $css := resources.Get "css/styles.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" />
+  {{ $heroCss := resources.Get "css/hero-banner.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $heroCss.RelPermalink }}" />
+  
+  {{ $footerCss := resources.Get "css/footer.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $footerCss.RelPermalink }}" />
  
   {{ block "head" . }}{{ end }}
 </head>

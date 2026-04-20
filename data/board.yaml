@@ -1,0 +1,34 @@
+- name: "Joe Bamberg"
+  title: "Board Member, Treasurer"
+  photo: "Joe.png"
+  bio: "Joe learned to make gunpowder from an encyclopedia reference at the age of 10. This started a search for recipes that ended with discovering he was good at organic chemistry. Joe then picked up a second degree in economics as it felt like science in the 1700's. He worked at Zoecon and helped develop weed and insect control by studying plant and insect hormones. He worked at Roche developing drugs for chronic and viral diseases. His experience at Burning Man revealed the importance of having communities surrounding Maker Spaces. Retiring has given him time to explore chocolate, go to film festivals and help out at BioCurious on chemistry related issues. Joe has been a board member since 2017."
+
+- name: "Board Member 2"
+  title: "Role"
+  photo: "board-member2.jpg"
+  bio: "Bio text here."
+
+- name: "Board Member 3"
+  title: "Role"
+  photo: "board-member3.jpg"
+  bio: "Bio text here."
+
+- name: "Board Member 4"
+  title: "Role"
+  photo: "board-member4.jpg"
+  bio: "Bio text here."
+
+- name: "Board Member 5"
+  title: "Role"
+  photo: "board-member5.jpg"
+  bio: "Bio text here."
+
+- name: "Board Member 6"
+  title: "Role"
+  photo: "board-member6.jpg"
+  bio: "Bio text here."
+
+- name: "Board Member 7"
+  title: "Role"
+  photo: "board-member7.jpg"
+  bio: "Bio text here."
