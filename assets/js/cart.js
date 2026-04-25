@@ -242,11 +242,28 @@
           customerEmail: email,
         }),
       });
+
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Something went wrong.');
-      window.location.href = data.url;
+
+      // warn if some items were skipped (already active subscriptions)
+      if (data.skippedItems && data.skippedItems.length > 0) {
+        errEl.textContent = `ℹ Note: you already have an active subscription for ${data.skippedItems.join(', ')} — it was not added again.`;
+        errEl.style.background = '#fffbeb';
+        errEl.style.borderColor = '#fde68a';
+        errEl.style.color = '#92400e';
+        errEl.style.display = 'block';
+        // still redirect after a short pause so they see the notice
+        setTimeout(() => { window.location.href = data.url; }, 2500);
+      } else {
+        window.location.href = data.url;
+      }
+
     } catch (err) {
       errEl.textContent = '⚠ ' + err.message;
+      errEl.style.background = '';
+      errEl.style.borderColor = '';
+      errEl.style.color = '';
       errEl.style.display = 'block';
       payBtn.textContent = 'Pay with Stripe →';
       payBtn.disabled = false;

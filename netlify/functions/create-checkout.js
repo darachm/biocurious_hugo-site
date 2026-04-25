@@ -1,3 +1,10 @@
+/* netlify/functions/create-checkout.js
+   Creates a Stripe Checkout session from cart items using lookup keys.
+   - Finds existing customer by email, never creates duplicates
+   - Merges new items into existing subscriptions where possible
+   Requires env vars: STRIPE_SECRET_KEY
+*/
+
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 exports.handler = async function (event) {
@@ -7,74 +14,155 @@ exports.handler = async function (event) {
 
   try {
     const { items, customerName, customerEmail } = JSON.parse(event.body);
+    const origin = event.headers.origin
+      || event.headers.referer
+      || 'https://biocurious-hugo-site.netlify.app';
 
-    const origin = event.headers.origin || event.headers.referer || 'https://biocurious-hugo-site.netlify.app';
+    // ── 1. Collect all lookup keys needed ──────────────────────────────────
+    const lookupKeys = items.map(i => i.id);
+    const hasSetup   = items.some(i => i.setup > 0);
+    if (hasSetup && !lookupKeys.includes('setup-fee')) {
+      lookupKeys.push('setup-fee');
+    }
 
-    // Create a Stripe customer with name and email so both appear in checkout
-    const customer = await stripe.customers.create({
-      name: customerName,
-      email: customerEmail,
+    // ── 2. Fetch all prices from Stripe in one call ─────────────────────────
+    const { data: prices } = await stripe.prices.list({
+      lookup_keys: lookupKeys,
+      expand: ['data.product'],
     });
 
-    // Build line items dynamically from cart data
-    const lineItems = [];
+    const priceMap = {};
+    prices.forEach(p => { priceMap[p.lookup_key] = p; });
+
+    for (const key of lookupKeys) {
+      if (!priceMap[key]) {
+        return {
+          statusCode: 400,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: `Price not found in Stripe for: ${key}` }),
+        };
+      }
+    }
+
+    // ── 3. Find or create customer (never duplicate by email) ───────────────
+    let customer;
+    const existing = await stripe.customers.list({
+      email: customerEmail,
+      limit: 1,
+    });
+
+    if (existing.data.length > 0) {
+      customer = existing.data[0];
+      // keep name up to date if it changed
+      if (customer.name !== customerName) {
+        customer = await stripe.customers.update(customer.id, { name: customerName });
+      }
+    } else {
+      customer = await stripe.customers.create({
+        name:  customerName,
+        email: customerEmail,
+      });
+    }
+
+    // ── 4. Check for existing active subscriptions ──────────────────────────
+    // Collect price IDs already on active subscriptions so we don't
+    // add the same product twice.
+    const activePriceIds = new Set();
+    const existingSubs = await stripe.subscriptions.list({
+      customer: customer.id,
+      status:   'active',
+      limit:    10,
+    });
+    existingSubs.data.forEach(sub => {
+      sub.items.data.forEach(si => activePriceIds.add(si.price.id));
+    });
+
+    // ── 5. Split items into recurring vs one-time ───────────────────────────
+    const subscriptionItems = [];
+    const invoiceItems      = [];
+    const skippedItems      = []; // already active — warn the customer
 
     for (const item of items) {
-      const unitAmount = Math.round(item.price * 100); // Stripe uses cents
+      const price   = priceMap[item.id];
+      const isRecur = item.freq === 'month' || item.freq === 'year';
 
-      if (item.freq === 'mo') {
-        // Recurring subscription item
-        const product = await stripe.products.create({
-          name: item.name,
-        });
-        const price = await stripe.prices.create({
-          product: product.id,
-          unit_amount: unitAmount,
-          currency: 'usd',
-          recurring: { interval: 'month' },
-        });
-        lineItems.push({ price: price.id, quantity: item.qty });
+      if (isRecur) {
+        if (activePriceIds.has(price.id)) {
+          skippedItems.push(item.name);
+        } else {
+          subscriptionItems.push({
+            price:    price.id,
+            quantity: item.qty || 1,
+          });
+        }
       } else {
-        // One-time item
-        lineItems.push({
-          price_data: {
-            currency: 'usd',
-            product_data: { name: item.name },
-            unit_amount: unitAmount,
-          },
-          quantity: item.qty,
-        });
-      }
-
-      // Setup fee as a one-time line item
-      if (item.setup && item.setup > 0) {
-        lineItems.push({
-          price_data: {
-            currency: 'usd',
-            product_data: { name: item.name + ' — Setup fee' },
-            unit_amount: Math.round(item.setup * 100),
-          },
-          quantity: 1,
+        invoiceItems.push({
+          price:    price.id,
+          quantity: item.qty || 1,
         });
       }
     }
 
-    // Determine session mode — if any item is recurring, use subscription mode
-    const hasRecurring = items.some(i => i.freq === 'mo');
-    const mode = hasRecurring ? 'subscription' : 'payment';
+    // setup fee — one-time, on first invoice only
+    if (hasSetup) {
+      invoiceItems.push({
+        price:    priceMap['setup-fee'].id,
+        quantity: 1,
+      });
+    }
 
-    const session = await stripe.checkout.sessions.create({
-      mode,
-      line_items: lineItems,
-      customer: customer.id,
-      success_url: origin + '/membership/success/',
-      cancel_url: origin + '/membership/?cancelled=true',
-    });
+    // if everything is already active, return a clear error
+    if (subscriptionItems.length === 0 && invoiceItems.length === 0) {
+      return {
+        statusCode: 400,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          error: `You already have an active subscription for: ${skippedItems.join(', ')}. Please contact us to make changes.`,
+        }),
+      };
+    }
+
+    // ── 6. Build session params ─────────────────────────────────────────────
+    const sessionParams = {
+      customer:    customer.id,
+      success_url: origin + '/membership/success/?session_id={CHECKOUT_SESSION_ID}',
+      cancel_url:  origin + '/membership/?cancelled=true',
+      billing_address_collection: 'auto',
+      metadata: {
+        skipped_items: skippedItems.join(', ') || 'none',
+      },
+    };
+
+    if (subscriptionItems.length > 0) {
+      sessionParams.mode       = 'subscription';
+      sessionParams.line_items = subscriptionItems;
+
+      if (invoiceItems.length > 0) {
+        sessionParams.subscription_data = {
+          add_invoice_items: invoiceItems.map(li => ({
+            price:    li.price,
+            quantity: li.quantity,
+          })),
+          metadata: {
+            customer_name: customerName,
+          },
+        };
+      }
+    } else {
+      sessionParams.mode       = 'payment';
+      sessionParams.line_items = invoiceItems;
+    }
+
+    // ── 7. Create session ───────────────────────────────────────────────────
+    const session = await stripe.checkout.sessions.create(sessionParams);
 
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: session.url }),
+      body: JSON.stringify({
+        url:          session.url,
+        skippedItems, // front-end can show a notice if needed
+      }),
     };
 
   } catch (err) {
