@@ -135,19 +135,17 @@ exports.handler = async function (event) {
 
     if (subscriptionItems.length > 0) {
       sessionParams.mode       = 'subscription';
-      sessionParams.line_items = subscriptionItems;
-
-      if (invoiceItems.length > 0) {
-        sessionParams.subscription_data = {
-          add_invoice_items: invoiceItems.map(li => ({
-            price:    li.price,
-            quantity: li.quantity,
-          })),
-          metadata: {
-            customer_name: customerName,
-          },
-        };
-      }
+      // merge subscription and one-time items into a single line_items array
+      // Stripe Checkout handles mixed recurring + one-time in subscription mode
+      sessionParams.line_items = [
+        ...subscriptionItems,
+        ...invoiceItems,
+      ];
+      sessionParams.subscription_data = {
+        metadata: {
+          customer_name: customerName,
+        },
+      };
     } else {
       sessionParams.mode       = 'payment';
       sessionParams.line_items = invoiceItems;
