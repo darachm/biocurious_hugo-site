@@ -1,4 +1,10 @@
+{{ define "head" }}
+  {{ $aboutCss := resources.Get "css/about.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $aboutCss.RelPermalink }}" />
+{{ end }}
+
 {{ define "main" }}
+
 <div class="page-wrap">
   <div class="container">
     <article class="page-content">
