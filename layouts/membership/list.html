@@ -261,6 +261,9 @@
   <div class="cart-items" id="cart-items">
     <p class="cart-empty">Your cart is empty.</p>
   </div>
+  <div id="cart-membership-warning" style="display:none;">
+  <p>⚠ No membership in cart. Existing members can proceed — membership status will be verified at checkout.</p>
+</div>
   <div class="cart-footer" id="cart-footer" style="display:none;">
     <div class="cart-totals">
       <div class="total-row"><span>Monthly recurring</span><span id="total-monthly">$0/mo</span></div>
@@ -283,6 +286,9 @@
     <h2>Almost there!</h2>
     <p>Enter your details. You'll be redirected to Stripe to pay securely.</p>
     <div id="checkout-error" class="checkout-error" style="display:none;"></div>
+	<div id="modal-membership-warning" style="display:none;">
+	  <p>⚠ No membership in cart. If you're an existing member your membership will be verified at checkout.</p>
+	</div>
     <div class="order-summary" id="order-summary"></div>
     <label>Full Name
       <input type="text" id="cust-name" placeholder="Jane Doe" autocomplete="name" />

@@ -34,28 +34,39 @@
   function cartHasMembership() {
     return cart.some(i => MEMBERSHIP_IDS.has(i.id));
   }
- 
-  function showAddonWarning(card) {
-    // remove any existing warning first
+   
+function showAddonWarning(card) {
+    // small inline note on the card still fades in briefly
     const existing = card.querySelector('.addon-membership-warning');
-    if (existing) return; // already showing
- 
-    const warning = document.createElement('p');
-    warning.className = 'addon-membership-warning';
-    warning.textContent = '⚠ A membership or office subscription is required to add this.';
- 
-    const btn = card.querySelector('.add-to-cart');
-    card.insertBefore(warning, btn);
- 
-    // auto-remove after 4 seconds
-    setTimeout(() => warning.remove(), 4000);
+    if (!existing) {
+      const warning = document.createElement('p');
+      warning.className = 'addon-membership-warning';
+      warning.textContent = '⚠ Added — see cart for membership info.';
+      const btn = card.querySelector('.add-to-cart');
+      card.insertBefore(warning, btn);
+      setTimeout(() => warning.remove(), 3000);
+    }
+  }
+  
+  function updateMembershipWarning() {
+    const hasAddon      = cart.some(i => ADDON_IDS.has(i.id));
+    const hasMembership = cartHasMembership();
+    const show          = hasAddon && !hasMembership;
+
+    // cart drawer warning
+    const cartWarning = document.getElementById('cart-membership-warning');
+    if (cartWarning) cartWarning.style.display = show ? 'block' : 'none';
+
+    // modal warning
+    const modalWarning = document.getElementById('modal-membership-warning');
+    if (modalWarning) modalWarning.style.display = show ? 'block' : 'none';
   }
 
- /* ── Cart logic ── */
+  /* ── Cart logic ── */
   function addItem(card) {
     const id  = card.dataset.id;
     const qty = getQty(card);
- 
+
     // if already in cart — remove it
     if (cart.find(i => i.id === id)) {
       removeItem(id);
@@ -64,13 +75,13 @@
       }
       return;
     }
- 
-    // check membership dependency for add-ons
+
+    // warn but don't block — existing members validated at checkout
     if (ADDON_IDS.has(id) && !cartHasMembership()) {
       showAddonWarning(card);
-      return;
+      // fall through intentionally
     }
- 
+
     cart.push({
       id,
       name:   card.dataset.name,
@@ -80,16 +91,16 @@
       qty,
       hasQty: card.dataset.qty === 'true',
     });
- 
-    // check if student add-on is checked on family card
+
     const studentToggle = card.querySelector('#student-addon-toggle');
     if (studentToggle && studentToggle.checked) {
       addStudentAddon(card);
     }
- 
+
     renderCart();
     updateButtons();
     openCart();
+	updateMembershipWarning();
   }
 
   function addStudentAddon(familyCard) {
@@ -240,6 +251,7 @@
     closeCart();
     const modal = $('#modal-overlay');
     modal.style.display = 'flex';
+	updateMembershipWarning();
 
     const summary = $('#order-summary');
     summary.innerHTML = cart.map(i =>

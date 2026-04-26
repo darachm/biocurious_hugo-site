@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   
   
-  <link rel="stylesheet" href="/css/styles.min.943ce691889cfdb0cd308e280ac9486c088c74ae849f87d4eff7f317f2e17da6.css" />
+  <link rel="stylesheet" href="/css/styles.min.4ccbd7317ee6fee6592444a4cac1c94c6c18e68f4a3cec06b0db234832266da3.css" />
   
   <link rel="stylesheet" href="/css/hero-banner.min.c76417c40e343ccb404b9a86e6eeaa49c95eacd1b57defb0d964fc6c4b79a86e.css" />
   
@@ -323,6 +323,9 @@
   <div class="cart-items" id="cart-items">
     <p class="cart-empty">Your cart is empty.</p>
   </div>
+  <div id="cart-membership-warning" style="display:none;">
+  <p>⚠ No membership in cart. Existing members can proceed — membership status will be verified at checkout.</p>
+</div>
   <div class="cart-footer" id="cart-footer" style="display:none;">
     <div class="cart-totals">
       <div class="total-row"><span>Monthly recurring</span><span id="total-monthly">$0/mo</span></div>
@@ -345,6 +348,9 @@
     <h2>Almost there!</h2>
     <p>Enter your details. You'll be redirected to Stripe to pay securely.</p>
     <div id="checkout-error" class="checkout-error" style="display:none;"></div>
+	<div id="modal-membership-warning" style="display:none;">
+	  <p>⚠ No membership in cart. If you're an existing member your membership will be verified at checkout.</p>
+	</div>
     <div class="order-summary" id="order-summary"></div>
     <label>Full Name
       <input type="text" id="cust-name" placeholder="Jane Doe" autocomplete="name" />
@@ -419,7 +425,7 @@
   
   
 
-  <script src="/js/cart.min.82b6c705ca3c6d3679237a4830619d2586be65ec8a3f832a2ef63875af2a7a31.js" defer></script>
+  <script src="/js/cart.min.3b1bfac969b12d9a80d0bd96499587f75d33d4e296ce0fe77c1b30cd5f5670a7.js" defer></script>
 
 </body>
 </html>
