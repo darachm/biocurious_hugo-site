@@ -1,11 +1,27 @@
 /* netlify/functions/create-checkout.js
    Creates a Stripe Checkout session from cart items using lookup keys.
    - Finds existing customer by email, never creates duplicates
-   - Merges new items into existing subscriptions where possible
-   Requires env vars: STRIPE_SECRET_KEY
+   - Validates add-ons require an active or in-cart membership
+   Requires env vars: STRIPE_SECRET_KEY (in netlify)
 */
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
+// Qualifying membership lookup keys
+const MEMBERSHIP_IDS = new Set([
+  'individual-monthly', 'individual-annual',
+  'family-monthly',     'family-annual',
+  'standard-office',
+]);
+
+// Add-on lookup keys that require a membership
+const ADDON_IDS = new Set([
+  'dry-storage-monthly',    'dry-storage-annual',
+  'freezer-80-monthly',     'freezer-80-annual',
+  'tissue-culture-monthly', 'tissue-culture-annual',
+  'lab-bench',              'back-lab-office',
+  'student-monthly',        'student-annual',
+]);
 
 exports.handler = async function (event) {
   if (event.httpMethod !== 'POST') {
@@ -53,7 +69,6 @@ exports.handler = async function (event) {
 
     if (existing.data.length > 0) {
       customer = existing.data[0];
-      // keep name up to date if it changed
       if (customer.name !== customerName) {
         customer = await stripe.customers.update(customer.id, { name: customerName });
       }
@@ -64,23 +79,46 @@ exports.handler = async function (event) {
       });
     }
 
-    // ── 4. Check for existing active subscriptions ──────────────────────────
-    // Collect price IDs already on active subscriptions so we don't
-    // add the same product twice.
-    const activePriceIds = new Set();
+    // ── 4. Check existing active subscriptions ──────────────────────────────
+    const activePriceIds  = new Set();
+    const activeLookupIds = new Set();
+
     const existingSubs = await stripe.subscriptions.list({
       customer: customer.id,
       status:   'active',
       limit:    10,
     });
+
     existingSubs.data.forEach(sub => {
-      sub.items.data.forEach(si => activePriceIds.add(si.price.id));
+      sub.items.data.forEach(si => {
+        activePriceIds.add(si.price.id);
+        if (si.price.lookup_key) activeLookupIds.add(si.price.lookup_key);
+      });
     });
 
-    // ── 5. Split items into recurring vs one-time ───────────────────────────
+    // ── 5. Membership dependency check ─────────────────────────────────────
+    // Add-ons are only valid if:
+    //   a) cart contains a qualifying membership, OR
+    //   b) customer already has an active qualifying membership in Stripe
+    const cartHasMembership     = items.some(i => MEMBERSHIP_IDS.has(i.id));
+    const stripeHasMembership   = [...activeLookupIds].some(k => MEMBERSHIP_IDS.has(k));
+    const hasQualifyingMembership = cartHasMembership || stripeHasMembership;
+
+    const addonItems = items.filter(i => ADDON_IDS.has(i.id));
+    if (addonItems.length > 0 && !hasQualifyingMembership) {
+      return {
+        statusCode: 400,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          error: 'Add-on services require an active Individual, Family, or Office membership. Please add a membership to your cart, or sign up for one first.',
+        }),
+      };
+    }
+
+    // ── 6. Split items — skip already-active subscriptions ─────────────────
     const subscriptionItems = [];
     const invoiceItems      = [];
-    const skippedItems      = []; // already active — warn the customer
+    const skippedItems      = [];
 
     for (const item of items) {
       const price   = priceMap[item.id];
@@ -103,7 +141,7 @@ exports.handler = async function (event) {
       }
     }
 
-    // setup fee — one-time, on first invoice only
+    // setup fee — one-time
     if (hasSetup) {
       invoiceItems.push({
         price:    priceMap['setup-fee'].id,
@@ -111,7 +149,7 @@ exports.handler = async function (event) {
       });
     }
 
-    // if everything is already active, return a clear error
+    // if everything is already active
     if (subscriptionItems.length === 0 && invoiceItems.length === 0) {
       return {
         statusCode: 400,
@@ -122,7 +160,7 @@ exports.handler = async function (event) {
       };
     }
 
-    // ── 6. Build session params ─────────────────────────────────────────────
+    // ── 7. Build session params ─────────────────────────────────────────────
     const sessionParams = {
       customer:    customer.id,
       success_url: origin + '/membership/success/?session_id={CHECKOUT_SESSION_ID}',
@@ -135,23 +173,19 @@ exports.handler = async function (event) {
 
     if (subscriptionItems.length > 0) {
       sessionParams.mode       = 'subscription';
-      // merge subscription and one-time items into a single line_items array
-      // Stripe Checkout handles mixed recurring + one-time in subscription mode
       sessionParams.line_items = [
         ...subscriptionItems,
         ...invoiceItems,
       ];
       sessionParams.subscription_data = {
-        metadata: {
-          customer_name: customerName,
-        },
+        metadata: { customer_name: customerName },
       };
     } else {
       sessionParams.mode       = 'payment';
       sessionParams.line_items = invoiceItems;
     }
 
-    // ── 7. Create session ───────────────────────────────────────────────────
+    // ── 8. Create session ───────────────────────────────────────────────────
     const session = await stripe.checkout.sessions.create(sessionParams);
 
     return {
@@ -159,7 +193,7 @@ exports.handler = async function (event) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         url:          session.url,
-        skippedItems, // front-end can show a notice if needed
+        skippedItems,
       }),
     };
 

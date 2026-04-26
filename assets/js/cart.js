@@ -15,19 +15,62 @@
     const v = card.querySelector('.qty-val');
     return v ? parseInt(v.textContent) : 1;
   }
+  
+  /* ── Membership dependency check ── */
+  const MEMBERSHIP_IDS = new Set([
+    'individual-monthly', 'individual-annual',
+    'family-monthly',     'family-annual',
+    'standard-office',    // office includes membership
+  ]);
+ 
+  const ADDON_IDS = new Set([
+    'dry-storage-monthly',      'dry-storage-annual',
+    'freezer-80-monthly',       'freezer-80-annual',
+    'tissue-culture-monthly',   'tissue-culture-annual',
+    'lab-bench',                'back-lab-office',
+    'student-monthly',          'student-annual',
+  ]);
+ 
+  function cartHasMembership() {
+    return cart.some(i => MEMBERSHIP_IDS.has(i.id));
+  }
+ 
+  function showAddonWarning(card) {
+    // remove any existing warning first
+    const existing = card.querySelector('.addon-membership-warning');
+    if (existing) return; // already showing
+ 
+    const warning = document.createElement('p');
+    warning.className = 'addon-membership-warning';
+    warning.textContent = '⚠ A membership or office subscription is required to add this.';
+ 
+    const btn = card.querySelector('.add-to-cart');
+    card.insertBefore(warning, btn);
+ 
+    // auto-remove after 4 seconds
+    setTimeout(() => warning.remove(), 4000);
+  }
 
-  /* ── Cart logic ── */
+ /* ── Cart logic ── */
   function addItem(card) {
     const id  = card.dataset.id;
     const qty = getQty(card);
-
+ 
+    // if already in cart — remove it
     if (cart.find(i => i.id === id)) {
       removeItem(id);
-      // also remove student add-on if present
-      removeItem(id.replace('family', 'student'));
+      if (id.startsWith('family-')) {
+        cart = cart.filter(i => !i.id.startsWith('student-'));
+      }
       return;
     }
-
+ 
+    // check membership dependency for add-ons
+    if (ADDON_IDS.has(id) && !cartHasMembership()) {
+      showAddonWarning(card);
+      return;
+    }
+ 
     cart.push({
       id,
       name:   card.dataset.name,
@@ -37,13 +80,13 @@
       qty,
       hasQty: card.dataset.qty === 'true',
     });
-
-    // check if student add-on is checked
+ 
+    // check if student add-on is checked on family card
     const studentToggle = card.querySelector('#student-addon-toggle');
     if (studentToggle && studentToggle.checked) {
       addStudentAddon(card);
     }
-
+ 
     renderCart();
     updateButtons();
     openCart();

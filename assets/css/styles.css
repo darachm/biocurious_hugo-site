@@ -445,6 +445,22 @@ button { font-family: inherit; cursor: pointer; }
 }
 .cancel-notice button { background: none; border: none; color: #92400e; font-size: 18px; cursor: pointer; }
 
+/* Add-on membership required warning */
+.addon-membership-warning {
+  font-size: 13px;
+  color: #92400e;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 6px;
+  padding: 8px 12px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* ── Mobile ── */
 @media (max-width: 768px) {
   .main-nav { display: none; position: absolute; top: 64px; left: 0; right: 0; background: var(--white); border-bottom: 1px solid var(--border); flex-direction: column; padding: 12px 0; box-shadow: var(--shadow-md); }
