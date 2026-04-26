@@ -2,46 +2,143 @@
 <section class="success-page">
   <div class="success-card">
 
-    <div class="success-icon">🎉</div>
-
-    <h1 class="success-title">You're in!</h1>
-    <p class="success-lead">
-      Thank you for joining BioCurious. Your membership is confirmed and we're
-      excited to welcome you to our community of makers, scientists, and curious minds.
-    </p>
-
-    <div class="success-steps">
-      <h2>What happens next</h2>
-      <ol class="steps-list">
-        <li>
-          <span class="step-icon">📧</span>
-          <div>
-            <strong>Check your inbox</strong>
-            <p>A confirmation email from Stripe is on its way with your payment receipt.</p>
-          </div>
-        </li>
-        <li>
-          <span class="step-icon">📬</span>
-          <div>
-            <strong>Welcome email from us</strong>
-            <p>You'll hear from the BioCurious team shortly with everything you need to get started — access details, safety orientation, and lab hours.</p>
-          </div>
-        </li>
-        <li>
-          <span class="step-icon">🔬</span>
-          <div>
-            <strong>Come on in</strong>
-            <p>Once you've completed orientation you're free to use the lab. Drop by an Open Lab night to meet the community!</p>
-          </div>
-        </li>
-      </ol>
+    <!-- Loading state -->
+    <div id="success-loading">
+      <div class="success-icon">⏳</div>
+      <h1 class="success-title">Confirming your order…</h1>
     </div>
 
-    <div class="success-actions">
-      <a href="/events/" class="btn btn-primary">Browse Upcoming Events</a>
-      <a href="/" class="btn btn-outline">Back to Home</a>
+    <!-- New member content -->
+    <div id="success-new-member" style="display:none;">
+      <div class="success-icon">🎉</div>
+      <h1 class="success-title">You're in!</h1>
+      <p class="success-lead">
+        Thank you for joining BioCurious, <span class="success-firstname"></span>! Your membership is confirmed
+        and we're excited to welcome you to our community of makers, scientists, and curious minds.
+      </p>
+      <div class="success-steps">
+        <h2>What happens next</h2>
+        <ol class="steps-list">
+          <li>
+            <span class="step-icon">📧</span>
+            <div>
+              <strong>Check your inbox</strong>
+              <p>A confirmation email from Stripe is on its way with your payment receipt.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-icon">📬</span>
+            <div>
+              <strong>Welcome email from us</strong>
+              <p>You'll receive a welcome email from the BioCurious team shortly with your next steps — safety training, project disclosure, and membership agreement.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-icon">🔬</span>
+            <div>
+              <strong>Come on in</strong>
+              <p>Once you've completed your onboarding steps you're free to use the lab. Drop by an Open Lab night to meet the community!</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+      <div class="success-actions">
+        <a href="/events/" class="btn btn-primary">Browse Upcoming Events</a>
+        <a href="/" class="btn btn-outline">Back to Home</a>
+      </div>
+    </div>
+
+    <!-- Existing member / add-on content -->
+    <div id="success-addon" style="display:none;">
+      <div class="success-icon">✅</div>
+      <h1 class="success-title">Add-on confirmed!</h1>
+      <p class="success-lead">
+        Thanks <span class="success-firstname"></span> — your add-on service has been activated
+        and added to your existing membership.
+      </p>
+      <div class="success-steps">
+        <h2>What happens next</h2>
+        <ol class="steps-list">
+          <li>
+            <span class="step-icon">📧</span>
+            <div>
+              <strong>Check your inbox</strong>
+              <p>A payment receipt from Stripe is on its way to your email.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-icon">🔬</span>
+            <div>
+              <strong>Your add-on is ready</strong>
+              <p>Your new service is active and available next time you visit the lab. If you have any questions reach out to us at <a href="mailto:info@biocurious.org">info@biocurious.org</a>.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+      <div class="success-actions">
+        <a href="/membership/" class="btn btn-primary">Back to Membership</a>
+        <a href="/" class="btn btn-outline">Back to Home</a>
+      </div>
+    </div>
+
+    <!-- Fallback if session can't be loaded -->
+    <div id="success-fallback" style="display:none;">
+      <div class="success-icon">🎉</div>
+      <h1 class="success-title">Thank you!</h1>
+      <p class="success-lead">
+        Your order is confirmed. You'll receive a confirmation email shortly.
+        If you have any questions please contact us at
+        <a href="mailto:info@biocurious.org">info@biocurious.org</a>.
+      </p>
+      <div class="success-actions">
+        <a href="/" class="btn btn-outline">Back to Home</a>
+      </div>
     </div>
 
   </div>
 </section>
+
+<script>
+(function () {
+  const params    = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id');
+
+  const loading   = document.getElementById('success-loading');
+  const newMember = document.getElementById('success-new-member');
+  const addon     = document.getElementById('success-addon');
+  const fallback  = document.getElementById('success-fallback');
+
+  function show(el) {
+    [loading, newMember, addon, fallback].forEach(e => e.style.display = 'none');
+    el.style.display = 'block';
+  }
+
+  function setFirstName(name) {
+    document.querySelectorAll('.success-firstname').forEach(el => {
+      el.textContent = name;
+    });
+  }
+
+  if (!sessionId) {
+    show(fallback);
+    return;
+  }
+
+  fetch('/.netlify/functions/get-session?session_id=' + encodeURIComponent(sessionId))
+    .then(res => res.json())
+    .then(data => {
+      if (data.error) {
+        show(fallback);
+        return;
+      }
+      setFirstName(data.firstName || '');
+      if (data.hasMembership) {
+        show(newMember);
+      } else {
+        show(addon);
+      }
+    })
+    .catch(() => show(fallback));
+})();
+</script>
 {{ end }}
