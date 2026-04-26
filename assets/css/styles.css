@@ -478,6 +478,19 @@ button { font-family: inherit; cursor: pointer; }
   margin: 0;
 }
 
+.success-icon-check {
+  width: 64px;
+  height: 64px;
+  background: #16a34a;
+  color: white;
+  border-radius: 50%;
+  font-size: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
 /* ── Mobile ── */
 @media (max-width: 768px) {
   .main-nav { display: none; position: absolute; top: 64px; left: 0; right: 0; background: var(--white); border-bottom: 1px solid var(--border); flex-direction: column; padding: 12px 0; box-shadow: var(--shadow-md); }
