@@ -155,7 +155,7 @@ exports.handler = async function (event) {
         statusCode: 400,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          error: `You already have an active subscription for: ${skippedItems.join(', ')}. Please contact us to make changes.`,
+          error: `You already have an active subscription for: ${skippedItems.join(', ')}. To make changes, please contact us at info@biocurious.org.`,
         }),
       };
     }
