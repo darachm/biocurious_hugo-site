@@ -32,7 +32,11 @@ molecular-biology or elements there of, or fruit flies.
 
 ## Main shared lab space
 
-( picture! )
+<img src="/images/lab/lab_main-1.jpg" width="100%"/>
+<img src="/images/lab/lab_main-3.jpg" width="100%"/>
+<img src="/images/lab/lab_main-5.jpg" width="100%"/>
+<img src="/images/lab/lab_main-2.jpg" width="100%"/>
+<img src="/images/lab/lab_main-4.jpg" width="100%"/>
 
 This is the main lab.
 Here you'll find most of the equipment, reagents, and space for you to use.
@@ -76,6 +80,7 @@ trained on our use and practices in this lab:
 - Electroporator
 
 
+<img src="/images/lab/lab_tc-1.jpg" width="100%"/>
 
 
 ## Waste - biohaz, hazardous, and normal trash
