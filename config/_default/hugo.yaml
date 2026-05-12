@@ -36,10 +36,6 @@ params:
         alt: "Lab Work"
       - image: "NewHood.jpg"
         alt: "Community"
-      - image: "Cuttlefish-6.jpg"
-        alt: "Cuttlefish project"
-      - image: "Cuttlefish-3.jpg"
-        alt: "Cuttlefish project"
       # Add as many slides as you like. Images go in static/images/
 
 menus:
