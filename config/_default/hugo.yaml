@@ -15,8 +15,8 @@ params:
   meetup: "https://www.meetup.com/biocurious/events/"
   stripe_checkout: "/.netlify/functions/create-checkout"
   heroBanner:
-    title: "Welcome to The World's Largest Community Lab Space for Biology"
-    subtitle: "Located in the heart of Silicon Valley, CA"
+    title: "Welcome to BioCurious"
+    subtitle: "Located in Santa Clara, CA"
     slides:
       - image: "MainLab-2.jpg"
         alt: "BioCurious lab overview"
@@ -68,7 +68,4 @@ menus:
     - name: Donations
       url: /donations/
       weight: 8
-    - name: Wiki
-      url: /wiki/
-      weight: 9
  
