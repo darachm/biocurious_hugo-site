@@ -1,6 +1,6 @@
 ---
 title: "Projects"
-description: NULL
+description: "Past and present community projects at BioCurious."
 ---
 
 We have had many projects in the past. We're in a bit of a lull right now,
