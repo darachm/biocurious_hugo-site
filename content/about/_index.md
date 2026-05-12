@@ -1,7 +1,6 @@
 ---
 title: "About Us"
-description: ""
-draft: false
+description: "About us and our organization"
 ---
 
 ## Our Mission
