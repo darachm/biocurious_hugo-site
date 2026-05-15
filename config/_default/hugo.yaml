@@ -3,6 +3,8 @@ timeZone: "America/Los_Angeles"
 defaultContentLanguage: en
 contentDir: content
 
+canonifyURLs: true
+
 markup:
   goldmark:
     renderer:
@@ -13,7 +15,6 @@ params:
   address: "3108 Patrick Henry Drive, Santa Clara, CA 95054"
   email: "info@biocurious.org"
   meetup: "https://www.meetup.com/biocurious/events/"
-  stripe_checkout: "/.netlify/functions/create-checkout"
   heroBanner:
     title: "Welcome to BioCurious"
     subtitle: "Located in Santa Clara, CA"
