@@ -38,6 +38,13 @@ params:
         alt: "Community"
       # Add as many slides as you like. Images go in static/images/
 
+  js_files:
+    - 'static/functions/create-checkout.js'
+    - 'static/functions/create-checkout_backup.js'
+    - 'static/functions/get-session.js'
+    - 'static/functions/package.json'
+    - 'static/functions/stripe-webhook.js'
+
 menus:
   main:
     - name: About
