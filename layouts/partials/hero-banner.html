@@ -1,14 +1,15 @@
 {{- $slides := .Site.Params.heroBanner.slides | default (slice
-  (dict "image" "banner1.jpg" "alt" "BioCurious lab")
-  (dict "image" "banner2.jpg" "alt" "Community experiments")
-  (dict "image" "banner3.jpg" "alt" "Open science")
+  (dict "image" "images/banner1.jpg" "alt" "BioCurious lab")
+  (dict "image" "images/banner2.jpg" "alt" "Community experiments")
+  (dict "image" "images/banner3.jpg" "alt" "Open science")
 ) -}}
 
 <section class="hero-banner" aria-label="Welcome banner">
   <div class="hero-slides">
     {{- range $i, $slide := $slides }}
     <div class="hero-slide{{ if eq $i 0 }} is-active{{ end }}"
-         style="background-image: url('{{ "/images/" | relURL }}{{ $slide.image }}')"
+         style="background-image: url('{{ .Site.BaseURL | urls.AbsURL }}{{ $slide.image }}')"
+id="{{ .Site.BaseURL }}"
          role="img"
          aria-label="{{ $slide.alt }}">
     </div>
